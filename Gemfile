@@ -44,8 +44,8 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'ffaker'
 
+  gem 'brakeman'
   gem 'bundler-audit'
   gem 'rspec-rails', '~> 5.1'
   gem 'rubocop-performance'
