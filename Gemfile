@@ -39,6 +39,8 @@ gem 'bootsnap', require: false
 # gem "rack-cors"
 
 gem 'ar-sequence'
+gem 'rswag-api'
+gem 'rswag-ui'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -51,6 +53,8 @@ group :development, :test do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+
+  gem 'rswag-specs'
 
   gem 'debug', platforms: %i[mri mingw x64_mingw]
 end

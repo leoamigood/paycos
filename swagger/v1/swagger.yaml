@@ -1,0 +1,11 @@
+---
+openapi: 3.0.1
+info:
+  title: PayCos payment API
+  version: V1
+paths:
+servers:
+  - url: http://localhost:{port}
+    variables:
+      port:
+        default: 3000
