@@ -7,12 +7,12 @@ describe CreditCard do
 
   it 'succeeds adding credit card for an account' do
     expect do
-      account.credit_cards.create!(pan: '1234****3456', holder: 'John Smith', exp_month: 3, exp_year: 2030)
+      account.credit_cards.create!(pan: '4111111111111111', holder: 'John Smith', exp_month: 3, exp_year: 2030)
     end.to change(described_class, :count).by(1)
   end
 
   it 'passes validation when required fields present' do
-    expect(described_class.new(account:, pan: '1234****3456', holder: 'John Smith', exp_month: 3, exp_year: 2030)).to be_valid
+    expect(described_class.new(account:, pan: '4111111111111111', holder: 'John Smith', exp_month: 3, exp_year: 2030)).to be_valid
   end
 
   it 'fails validation when required fields missing' do
@@ -20,19 +20,19 @@ describe CreditCard do
   end
 
   it 'fails validation when month value is not integer' do
-    expect(described_class.new(account:, exp_month: 7.5, pan: '1234****3456', holder: 'John Smith', exp_year: 2030)).to be_invalid
+    expect(described_class.new(account:, exp_month: 7.5, pan: '4111111111111111', holder: 'John Smith', exp_year: 2030)).to be_invalid
   end
 
   it 'fails validation when month value out of range' do
-    expect(described_class.new(account:, exp_month: 13, pan: '1234****3456', holder: 'John Smith', exp_year: 2030)).to be_invalid
+    expect(described_class.new(account:, exp_month: 13, pan: '4111111111111111', holder: 'John Smith', exp_year: 2030)).to be_invalid
   end
 
   it 'fails validation when year value is not integer' do
-    expect(described_class.new(account:, exp_year: 2022.2, pan: '1234****3456', holder: 'John Smith', exp_month: 3)).to be_invalid
+    expect(described_class.new(account:, exp_year: 2022.2, pan: '4111111111111111', holder: 'John Smith', exp_month: 3)).to be_invalid
   end
 
   it 'fails validation when year value is out of the range' do
-    expect(described_class.new(account:, exp_year: 2030, pan: '1234****3456', holder: 'John Smith', exp_month: 123)).to be_invalid
+    expect(described_class.new(account:, exp_year: 2030, pan: '4111111111111111', holder: 'John Smith', exp_month: 123)).to be_invalid
   end
 
   context 'with credit card never used for a payment' do

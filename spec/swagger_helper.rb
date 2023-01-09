@@ -16,13 +16,35 @@ RSpec.configure do |config|
   # the root example_group in your specs, e.g. describe '...', swagger_doc: 'v2/swagger.json'
   config.swagger_docs = {
     'v1/swagger.yaml' => {
-      openapi: '3.0.1',
-      info:    {
+      openapi:    '3.0.1',
+      info:       {
         title:   'API V1',
         version: 'v1'
       },
-      paths:   {},
-      servers: [
+      components: {
+        schemas: {
+          errors_objects: {
+            type:       :object,
+            properties: {
+              errors: { '$ref' => '#/components/schemas/errors' }
+            },
+            required:   %w[errors]
+          },
+          errors:         {
+            type:     :array,
+            items:    {
+              type:       :object,
+              properties: {
+                error:   { type: :string },
+                details: { type: :object }
+              }
+            },
+            required: %w[error]
+          }
+        }
+      },
+      paths:      {},
+      servers:    [
         {
           url:       'http://{defaultHost}',
           variables: {

@@ -1,11 +1,188 @@
 ---
 openapi: 3.0.1
 info:
-  title: PayCos payment API
-  version: V1
+  title: API V1
+  version: v1
+components:
+  schemas:
+    errors_objects:
+      type: object
+      properties:
+        errors:
+          "$ref": "#/components/schemas/errors"
+      required:
+      - errors
+    errors:
+      type: array
+      items:
+        type: object
+        properties:
+          error:
+            type: string
+          details:
+            type: object
+      required:
+      - error
 paths:
+  "/api/v1/accounts":
+    post:
+      summary: Create Account
+      tags:
+      - Account
+      responses:
+        '201':
+          description: successful
+  "/api/v1/accounts/{account_id}/payment_methods":
+    post:
+      summary: Add Payment Method
+      tags:
+      - Payment Method
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Credit Card Payment Method created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  account_id:
+                    type: integer
+                    example: 1000
+                  pan:
+                    type: string
+                    example: 1234****3456
+                  holder:
+                    type: string
+                    example: John Smith
+                  exp_month:
+                    type: integer
+                    example: 3
+                  exp_year:
+                    type: integer
+                    example: 2030
+                required:
+                - account_id
+                - id
+                - pan
+                - holder
+                - exp_month
+                - exp_year
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+        '422':
+          description: account invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_type:
+                  type: string
+                  example: credit_card
+                credit_card:
+                  type: object
+                  properties:
+                    pan:
+                      type: string
+                      example: '4242424242424242'
+                    holder:
+                      type: string
+                      example: John Smith
+                    exp_month:
+                      type: integer
+                      example: 3
+                    exp_year:
+                      type: integer
+                      example: 2030
+                  required:
+                  - pan
+                  - holder
+                  - exp_month
+                  - exp_year
+              required:
+              - payment_method_type
+    get:
+      summary: List Payment Methods
+      tags:
+      - Payment Method
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List stored Payment Methods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    type: integer
+                    example: 1000
+                  payment_methods:
+                    type: object
+                    properties:
+                      credit_cards:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            pan:
+                              type: string
+                              example: 1234****3456
+                            exp_month:
+                              type: integer
+                              example: 3
+                            exp_year:
+                              type: integer
+                              example: 2030
+                        required:
+                        - id
+                        - pan
+                        - exp_month
+                        - exp_year
+                    required:
+                    - credit_cards
+                required:
+                - account_id
+        '404':
+          description: account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+        '422':
+          description: account invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
 servers:
-  - url: http://localhost:{port}
-    variables:
-      port:
-        default: 3000
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
