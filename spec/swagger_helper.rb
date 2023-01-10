@@ -46,6 +46,9 @@ RSpec.configure do |config|
       paths:      {},
       servers:    [
         {
+          url: 'https://paycos.fly.dev'
+        },
+        {
           url:       'http://{defaultHost}',
           variables: {
             defaultHost: {
