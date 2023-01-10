@@ -5,7 +5,6 @@ module Api
     class PaymentMethodsController < BaseController
       include PaymentMethodValidator
 
-      before_action :lowercase_params
       before_action :validate_account
 
       def index
@@ -14,7 +13,7 @@ module Api
       end
 
       def create
-        validate_payment_method_params
+        param! :payment_method_type, String, required: true, message: 'Invalid payment method'
 
         payment_method = validate_payment_method
         return validation_errors(payment_method) unless payment_method.valid?
@@ -24,20 +23,6 @@ module Api
       end
 
       private
-
-      def validate_payment_method_params
-        param! :account_id, Integer, required: true, message: 'Invalid account'
-        param! :payment_method_type, String, required: true, message: 'Invalid payment method'
-      end
-
-      def validate_credit_card_params
-        param! :credit_card, Hash, required: true do |b|
-          b.param! :pan, String, blank: false, required: true, message: 'Invalid credit card number'
-          b.param! :holder, String, blank: false, required: true, message: 'Invalid credit card holder name'
-          b.param! :exp_month, Integer, in: 1..12, required: true, message: 'Invalid expiration month'
-          b.param! :exp_year, Integer, in: valid_expiration_year, required: true, message: 'Invalid expiration year'
-        end
-      end
 
       def valid_expiration_year(now = DateTime.now)
         now.year..10.years.from_now.year

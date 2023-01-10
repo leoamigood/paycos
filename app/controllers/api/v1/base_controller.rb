@@ -4,6 +4,9 @@ module Api
   module V1
     class BaseController < ActionController::API
       include ControllerErrorHandler
+
+      before_action :lowercase_params
+
       def validate_account
         param! :account_id, Integer, required: true, message: 'Invalid account'
 

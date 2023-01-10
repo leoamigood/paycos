@@ -6,4 +6,8 @@ class PaymentService
 
     payment_method
   end
+
+  def charge(account, payment_method, payload)
+    account.payments.create!(payload.merge(credit_card: payment_method))
+  end
 end

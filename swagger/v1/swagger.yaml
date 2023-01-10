@@ -32,6 +32,49 @@ paths:
       responses:
         '201':
           description: successful
+  "/api/v1/accounts/{account_id}/balance":
+    get:
+      summary: Account Balance
+      tags:
+      - Balance
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Total Balance for Account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    type: integer
+                    example: 1000
+                  balance:
+                    type: integer
+                    example: 650
+                  created_at:
+                    type: datetime
+                required:
+                - account_id
+                - balance
+                - created_at
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+        '422':
+          description: Account invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
   "/api/v1/accounts/{account_id}/payment_methods":
     post:
       summary: Add Payment Method
@@ -177,6 +220,120 @@ paths:
                 "$ref": "#/components/schemas/errors_objects"
         '422':
           description: account invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+  "/api/v1/accounts/{account_id}/payments":
+    post:
+      summary: Charge Credit Card
+      tags:
+      - Payment
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '202':
+          description: Credit Card charge accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    type: integer
+                    example: 1000
+                  transaction_id:
+                    type: integer
+                    example: 1
+                  created_at:
+                    type: string
+                    example: '2023-01-10T05:11:00.802Z'
+                required:
+                - account_id
+                - transaction_id
+                - created_at
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+        '422':
+          description: Account invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_id:
+                  type: integer
+                  example: 1
+                amount:
+                  type: integer
+                  example: 200
+                description:
+                  type: string
+              required:
+              - payment_method_id
+              - amount
+  "/api/v1/accounts/{account_id}/payments/{id}":
+    get:
+      summary: Payment Status
+      tags:
+      - Payment
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Get Transaction by ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    type: integer
+                    example: 1000
+                  transaction_id:
+                    type: integer
+                    example: 1
+                  amount:
+                    type: integer
+                    example: 650
+                  created_at:
+                    type: string
+                    example: '2023-01-10T05:11:00.802Z'
+                required:
+                - account_id
+                - transaction_id
+                - amount
+                - created_at
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_objects"
+        '422':
+          description: Account invalid
           content:
             application/json:
               schema:

@@ -32,3 +32,5 @@
 en:
   errors:
     account_not_found: "Account not found"
+    payment_method_not_found: "Payment Method not found"
+    payment_not_found: "Transaction not found"

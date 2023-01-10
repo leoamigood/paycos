@@ -16,6 +16,15 @@ module PaymentMethodValidator
       end
     end
 
+    def validate_credit_card_params
+      param! :credit_card, Hash, required: true do |b|
+        b.param! :pan, String, blank: false, required: true, message: 'Invalid credit card number'
+        b.param! :holder, String, blank: false, required: true, message: 'Invalid credit card holder name'
+        b.param! :exp_month, Integer, in: 1..12, required: true, message: 'Invalid expiration month'
+        b.param! :exp_year, Integer, in: valid_expiration_year, required: true, message: 'Invalid expiration year'
+      end
+    end
+
     def validate_credit_card(error)
       case error.type
       when :invalid
