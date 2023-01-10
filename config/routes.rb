@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
 
   # Defines the root path route ("/")
-  # root "articles#index"
+  root to: redirect('/api-docs')
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
